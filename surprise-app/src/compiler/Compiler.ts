@@ -2,6 +2,7 @@ import { Instruction } from "./abstract/Instruction";
 import { DeclareFunction } from "./actions/instruction/function/DeclareFunction";
 import { Environment } from "./Environment";
 import { Generator } from "./Generator";
+import { Logs } from "./utils/LogArray";
 const parser = require("../grammar/grammar");
 
 /*
@@ -18,14 +19,14 @@ export class Compiler {
     this.output = ''
   }
   compile() {
-    console.log('is here!')
+    Logs.length = 0
     let node;
     try {
       node = parser.parse(this.code);
     } catch (error) {
+      Logs.push(error)
       return { state: false, message: 'There was an error while parsing your input!' };
     }
-    console.log(node)
     const generator = Generator.getInstance();
     generator.clearCode();
     const env = new Environment(null);
@@ -39,6 +40,7 @@ export class Compiler {
       });
       generator.addEnd();
     } catch (error) {
+      Logs.push(error)
       return { state: false, message: 'There was an error while generating your TAC!' };
     }
     const functions = generator.getFunctions();

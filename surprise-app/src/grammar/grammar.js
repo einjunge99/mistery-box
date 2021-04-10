@@ -165,10 +165,10 @@ case 39:
 this.$ = new Less(true,$$[$0-2],$$[$0],_$[$0-2].first_line, _$[$0-2].first_column)
 break;
 case 40:
-this.$ = new Equal($$[$0-2],$$[$0],_$[$0-2].first_line, _$[$0-2].first_column)
+this.$ = new Equals($$[$0-2],$$[$0],_$[$0-2].first_line, _$[$0-2].first_column)
 break;
 case 41:
-this.$ = new NotEqual($$[$0-2],$$[$0],_$[$0-2].first_line, _$[$0-2].first_column)
+this.$ = new NotEquals($$[$0-2],$$[$0],_$[$0-2].first_line, _$[$0-2].first_column)
 break;
 case 42:
 this.$ = new Neg($$[$0],_$[$0-1].first_line, _$[$0-1].first_column)
@@ -520,8 +520,8 @@ _handle_error:
     const {Inc} = require('../compiler/actions/expression/arithmetic/Inc')
     const {Dec} = require('../compiler/actions/expression/arithmetic/Dec')
 
-    const {Equal} = require('../compiler/actions/expression/relational/Equal')
-    const {NotEqual} = require('../compiler/actions/expression/relational/NotEqual')
+    const {Equals} = require('../compiler/actions/expression/relational/Equals')
+    const {NotEquals} = require('../compiler/actions/expression/relational/NotEquals')
     const {Less} = require('../compiler/actions/expression/relational/Less')
     const {Great} = require('../compiler/actions/expression/relational/Great')
     

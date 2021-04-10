@@ -1,0 +1,1 @@
+export let Logs : Array<any> = new Array();

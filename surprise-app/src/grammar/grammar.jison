@@ -24,8 +24,8 @@
     const {Inc} = require('../compiler/actions/expression/arithmetic/Inc')
     const {Dec} = require('../compiler/actions/expression/arithmetic/Dec')
 
-    const {Equal} = require('../compiler/actions/expression/relational/Equal')
-    const {NotEqual} = require('../compiler/actions/expression/relational/NotEqual')
+    const {Equals} = require('../compiler/actions/expression/relational/Equals')
+    const {NotEquals} = require('../compiler/actions/expression/relational/NotEquals')
     const {Less} = require('../compiler/actions/expression/relational/Less')
     const {Great} = require('../compiler/actions/expression/relational/Great')
     
@@ -205,8 +205,8 @@ EXPRESION
 | EXPRESION '>=' EXPRESION  {$$ = new Great(true,$1,$3,@1.first_line, @1.first_column)}
 | EXPRESION '<' EXPRESION   {$$ = new Less(false,$1,$3,@1.first_line, @1.first_column)}
 | EXPRESION '<=' EXPRESION  {$$ = new Less(true,$1,$3,@1.first_line, @1.first_column)}
-| EXPRESION '==' EXPRESION  {$$ = new Equal($1,$3,@1.first_line, @1.first_column)}
-| EXPRESION '!=' EXPRESION  {$$ = new NotEqual($1,$3,@1.first_line, @1.first_column)}
+| EXPRESION '==' EXPRESION  {$$ = new Equals($1,$3,@1.first_line, @1.first_column)}
+| EXPRESION '!=' EXPRESION  {$$ = new NotEquals($1,$3,@1.first_line, @1.first_column)}
 | '-' EXPRESION             {$$ = new Neg($2,@1.first_line, @1.first_column)}}  
 | '!' EXPRESION             {$$ = new Not($2,@1.first_line, @1.first_column)}            
 | '(' EXPRESION ')'         {$$ = $2}              

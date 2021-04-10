@@ -16,6 +16,8 @@ import { Interpreter } from "../../interpreter/Interpreter";
 import { BsGearWideConnected } from "react-icons/bs";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Logs } from "../../compiler/utils/LogArray";
+import { ErrorTS } from "../../compiler/utils/Error";
 
 interface IProps {}
 
@@ -64,10 +66,14 @@ export class Home extends Component<IProps, IState> {
     const { state, message } = result;
     if (!state) {
       toast.error(message);
+      Logs.forEach((e:ErrorTS)=>{
+        toast.error(e.toString());
+      })
       return;
     }
     toast.success(message);
     const output = compiler.getOutput();
+
     this.setState({ output, isDebugging: false });
     await this.sleep(0.01);
     this.handleBeautify(true);

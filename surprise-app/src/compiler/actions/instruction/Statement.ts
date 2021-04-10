@@ -1,5 +1,6 @@
 import { Instruction } from "../../abstract/Instruction";
 import { Environment } from "../../Environment";
+import { Logs } from "../../utils/LogArray";
 
 export class Statement extends Instruction {
     private instructions: Array<Instruction> | null
@@ -14,7 +15,7 @@ export class Statement extends Instruction {
             try {
                 instruction.compile(newEnv);
             } catch (error) {
-                //output.push(error);
+                Logs.push(error);
             }
         });
     }
