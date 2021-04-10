@@ -1,4 +1,3 @@
-import { type } from "node:os";
 import { InstructionC3D } from "../Abstract/Instruction";
 import { Interpreter, Type } from "../Interpreter";
 

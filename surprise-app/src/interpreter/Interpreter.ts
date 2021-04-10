@@ -71,7 +71,7 @@ export class Interpreter {
         });
         this.variables.set('p', 0)
         this.variables.set('h', 0)
-        if (line == -1) return { state: false, message: 'main function not found', line };
+        if (line === -1) return { state: false, message: 'main function not found', line };
         return { state: true, message: 'TAC generated successfully!', line };
 
     }
@@ -80,6 +80,14 @@ export class Interpreter {
         this.functions.forEach((e, i) => {
             if (e.getId() === name) this.currentIndex = i
         });
+    }
+
+    public finishExecution() {
+        let line = 0;
+        while (!this.end) {
+            line = this.goForward()
+        }
+        return line
     }
 
     public goForward() {
@@ -106,10 +114,10 @@ export class Interpreter {
 
     public evaluateConditional(left: string, relational: string, right: string): boolean {
         const leftSearch = this.variables.get(left)
-        const leftValue = leftSearch != undefined ? leftSearch : +left
+        const leftValue = leftSearch !== undefined ? leftSearch : +left
 
         const rightSearch = this.variables.get(right)
-        const rightValue = rightSearch != undefined ? rightSearch : +right
+        const rightValue = rightSearch !== undefined ? rightSearch : +right
         return this.getRelationalResult(leftValue, rightValue, relational)
     }
 
@@ -123,25 +131,25 @@ export class Interpreter {
             if (leftIsStructure) {
                 const splitted = left.split(',')
                 leftSearch = this.variables.get(splitted[1])
-                leftValue = leftSearch != undefined ? leftSearch : +splitted[1]
+                leftValue = leftSearch !== undefined ? leftSearch : +splitted[1]
                 leftValue = this.whichStructure(left) ? this.heap[leftValue] : this.stack[leftValue]
             }
             else {
                 leftSearch = this.variables.get(left)
-                leftValue = leftSearch != undefined ? leftSearch : +left
+                leftValue = leftSearch !== undefined ? leftSearch : +left
             }
             if (right === '') { this.variables.set(target, leftValue); return }
             const rightSearch = this.variables.get(right)
-            const rightValue = rightSearch != undefined ? rightSearch : +right
+            const rightValue = rightSearch !== undefined ? rightSearch : +right
             const result = this.getArithmeticResult(leftValue, rightValue, op)
             this.variables.set(target, result); return
         }
 
         const leftSearch = this.variables.get(left)
-        const leftValue = leftSearch != undefined ? leftSearch : +left
+        const leftValue = leftSearch !== undefined ? leftSearch : +left
         const splitted = target.split(',')
         const targetSearch = this.variables.get(splitted[1])
-        const targetValue = targetSearch != undefined ? targetSearch : +splitted[1]
+        const targetValue = targetSearch !== undefined ? targetSearch : +splitted[1]
         this.whichStructure(target) ? this.heap[targetValue] = leftValue : this.stack[targetValue] = leftValue
 
     }
@@ -180,7 +188,7 @@ export class Interpreter {
 
     public setOutput(cast: string, value: string) {
         const leftSearch = this.variables.get(value)
-        const leftValue = leftSearch != undefined ? leftSearch : +value
+        const leftValue = leftSearch !== undefined ? leftSearch : +value
         if (cast.includes('%f')) this.console += leftValue
         if (cast.includes('%c')) this.console += String.fromCharCode(leftValue)
     }

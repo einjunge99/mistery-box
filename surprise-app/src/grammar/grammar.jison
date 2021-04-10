@@ -40,6 +40,11 @@
 
     const {DeclareFunction} = require('../compiler/actions/instruction/function/DeclareFunction')
 
+    const {DoWhile} = require('../compiler/actions/instruction/control/DoWhile')
+    const {For} = require('../compiler/actions/instruction/control/For')
+    const {ForBody} = require('../compiler/actions/instruction/control/ForBody')
+    const {If} = require('../compiler/actions/instruction/control/If')
+    const {While} = require('../compiler/actions/instruction/control/While')
 %}
 
 %lex
@@ -72,12 +77,9 @@ number {entero}("."{entero})?
 
 "if"				return 'if';
 "else"				return 'else';
-"switch"			return 'switch';
-"case"				return 'case';
 "do"				return "do"
 "while"				return "while"
 "for"               return "for"
-"default"			return 'default';
 
 "break"				return 'break';
 "continue"          return "continue"
@@ -160,55 +162,28 @@ INSTRUCTION
 ;
 
 WHILE
-: 'while' '(' EXPRESION ')' CUERPO  
+: 'while' '(' EXPRESION ')' CUERPO  {$$ = new While($3, $5, @1.first_line, @1.first_column)}
 ;
 
 DO_WHILE
-: 'do' CUERPO 'while' '(' EXPRESION ')' 
+: 'do' CUERPO 'while' '(' EXPRESION ')' {$$ = new DoWhile($5, $2, @1.first_line, @1.first_column)}
 ;
 
 IF
-: 'if' '(' EXPRESION ')' CUERPO                 
-| 'if' '(' EXPRESION ')' CUERPO 'else' CUERPO   
-| 'if' '(' EXPRESION ')' CUERPO 'else' IF       
+: 'if' '(' EXPRESION ')' CUERPO                 {$$ = new If($3, $5, null, @1.first_line, @1.first_column)}
+| 'if' '(' EXPRESION ')' CUERPO 'else' CUERPO   {$$ = new If($3, $5, $7, @1.first_line, @1.first_column)}
+| 'if' '(' EXPRESION ')' CUERPO 'else' IF       {$$ = new If($3, $5, $7, @1.first_line, @1.first_column)}
 ;
 
 FOR
-: 'for' '(' CUERPO_FOR ')' CUERPO   
+: 'for' '(' CUERPO_FOR ')' CUERPO   {$$ = new For($3,$5,@1.first_line, @1.first_column)}
 ;
 
 CUERPO_FOR                
-: DECLARAR_VARIABLE ';' EXPRESION ';' EXPRESION 
-| ASIGNAR ';' EXPRESION ';' EXPRESION           
+: DECLARAR_VARIABLE ';' EXPRESION ';' EXPRESION    {$$ = new ForBody($1,$3,$5,@1.first_line, @1.first_column)}
+| ASIGNAR ';' EXPRESION ';' EXPRESION              {$$ = new ForBody($1,$3,$5,@1.first_line, @1.first_column)}         
 ;
 
-
-SWITCH
-: 'switch' '(' EXPRESION ')' '{' CUERPO_SWITCH '}'
-| 'switch' '(' EXPRESION ')' '{' '}'
-;
-
-CUERPO_SWITCH                  
-:  DEFAULT CASE   
-|  CASE DEFAULT       
-|  CASE DEFAULT CASE
-|  CASE               
-|  DEFAULT           
-;
-
-CUERPO_CASE
-: INSTRUCTIONS 
-| /*epsilon*/   
-;
-
-CASE
-: CASE 'case' EXPRESION ':' CUERPO_CASE 
-|'case' EXPRESION ':' CUERPO_CASE       
-;
-
-DEFAULT
-: 'default' ':' CUERPO_CASE 
-;
 
 CUERPO
 : '{' '}'              {$$ = new Statement([], @1.first_line, @1.first_column);}

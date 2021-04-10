@@ -106,6 +106,32 @@ export class Home extends Component<IProps, IState> {
     });
   };
 
+  handleEnd = () => {
+    let { isDebugging, canMoveForward } = this.state;
+    if (!canMoveForward) {
+      if (isDebugging) {
+        toast.warning(`You've reached the end, please, start again`);
+      } else {
+        toast.warning(`First, you must start debbuging!`);
+      }
+      return;
+    }
+    isDebugging = !isDebugging;
+    canMoveForward = !canMoveForward;
+    const interpreter = Interpreter.getInstance();
+    const currentLine = interpreter.finishExecution()-1
+    const console = interpreter.getConsole();
+    this.setState({
+      stack: interpreter.getStack(),
+      heap: interpreter.getHeap(),
+      variables: interpreter.getVariables(),
+      currentLine,
+      console,
+      isDebugging,
+      canMoveForward,
+    });
+  };
+
   handleStart = () => {
     const { output } = this.state;
     if (!output) {
@@ -230,6 +256,13 @@ export class Home extends Component<IProps, IState> {
                 onClick={this.handleDebug}
               >
                 Next Line
+              </div>
+              <div
+                style={canMoveForward ? { opacity: 1 } : { opacity: 0.4 }}
+                className="forward-title"
+                onClick={this.handleEnd}
+              >
+                End Execution
               </div>
             </div>
             <div className="content-container">
