@@ -1,6 +1,11 @@
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is a README template, is very straightforward so no need to add anything else except that, after you've cloned this repo, please run
+```
+npm i
+```
+to add the node_modules folder to your project.
 
 ## Available Scripts
 
