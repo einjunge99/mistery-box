@@ -5,12 +5,6 @@ import { Generator } from "./Generator";
 import { Logs } from "./utils/LogArray";
 const parser = require("../grammar/grammar");
 
-/*
-function a(n:number):number{
-    return n;
-}
-console.log(a(1));
-*/
 export class Compiler {
   private code: string
   private output: string
@@ -45,8 +39,11 @@ export class Compiler {
     }
     const functions = generator.getFunctions();
     const code = generator.getCode();
+    /*
+    Uncomment if want to add temporals to output.
     const labelCount = generator.getTemporal();
-    //this.code = this.header(labelCount - 1) + functions + code;
+    this.code = this.header(labelCount - 1) + functions + code;
+    */
     this.output = functions + code;
     return { state: true, message: 'TAC generated successfully!' };
   }

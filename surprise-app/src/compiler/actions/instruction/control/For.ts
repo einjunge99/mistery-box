@@ -15,7 +15,7 @@ export class For extends Instruction {
     compile(env: Environment): void {
         const generator = Generator.getInstance();
         const newEnv = new Environment(env);
-        generator.addComment('BEGIN For');
+        generator.addComment('BEGIN for');
         //@ts-ignore
         this.condition.compile(newEnv, this.instructions);
     }

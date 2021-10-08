@@ -8,7 +8,7 @@ import { ErrorTS } from "../../../utils/Error";
 export class If extends Instruction {
     private condition: Expression
     private instruction: Instruction
-    private elseIf: Instruction|null
+    private elseIf: Instruction | null
     constructor(condition: Expression, instruction: Instruction, elseIf: Instruction | null, line: number, column: number) {
         super(line, column);
         this.condition = condition
@@ -34,6 +34,7 @@ export class If extends Instruction {
             else {
                 generator.addLabel(condition.falseLabel);
             }
+            generator.addComment('END if');
             return;
         }
         throw new ErrorTS(this.line, this.column, 'Semantical', 'Condition found not boolean');

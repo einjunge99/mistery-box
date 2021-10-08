@@ -1,1 +1,1 @@
-export let Logs : Array<any> = new Array();
+export let Logs: Array<any> = [];

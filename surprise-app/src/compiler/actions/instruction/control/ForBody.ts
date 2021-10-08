@@ -36,7 +36,7 @@ export class ForBody extends Instruction {
 
             generator.addGoto(lblFor);
             generator.addLabel(condition.falseLabel);
-            generator.addComment('END For');
+            generator.addComment('END for');
             return;
         }
         throw new ErrorTS(this.line, this.column, 'Semantical', `Condition found not boolean`);
