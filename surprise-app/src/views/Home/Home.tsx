@@ -19,7 +19,14 @@ import "react-toastify/dist/ReactToastify.css";
 import { Logs } from "../../compiler/utils/LogArray";
 import { ErrorTS } from "../../compiler/utils/Error";
 
-interface IProps {}
+const INITIAL_CODE = `
+  // Uncomment the following lines
+  // to get a look at the built-in console:
+  // const greeting:string = "Hello World!";
+  // console.log(greeting);
+`
+
+interface IProps { }
 
 interface IState {
   input: string;
@@ -38,7 +45,7 @@ export class Home extends Component<IProps, IState> {
   constructor(props: any) {
     super(props);
     this.state = {
-      input: "",
+      input: INITIAL_CODE,
       output: "",
       currentLine: 0,
       isDebugging: false,
@@ -66,7 +73,7 @@ export class Home extends Component<IProps, IState> {
     const { state, message } = result;
     if (!state) {
       toast.error(message);
-      Logs.forEach((e:ErrorTS)=>{
+      Logs.forEach((e: ErrorTS) => {
         toast.error(e.toString());
       })
       return;
@@ -96,7 +103,7 @@ export class Home extends Component<IProps, IState> {
     const sessionRef = this.refs.output;
     //@ts-ignore
     const editor = sessionRef.editor;
-    editor.scrollToLine(currentLine, true, true, function () {});
+    editor.scrollToLine(currentLine, true, true, function () { });
     if (hasEnded) {
       isDebugging = !isDebugging;
       canMoveForward = !canMoveForward;
@@ -125,7 +132,7 @@ export class Home extends Component<IProps, IState> {
     isDebugging = !isDebugging;
     canMoveForward = !canMoveForward;
     const interpreter = Interpreter.getInstance();
-    const currentLine = interpreter.finishExecution()-1
+    const currentLine = interpreter.finishExecution() - 1
     const console = interpreter.getConsole();
     this.setState({
       stack: interpreter.getStack(),
@@ -153,7 +160,7 @@ export class Home extends Component<IProps, IState> {
     const sessionRef = this.refs.output;
     //@ts-ignore
     const editor = sessionRef.editor;
-    editor.scrollToLine(line - 1, true, true, function () {});
+    editor.scrollToLine(line - 1, true, true, function () { });
     let { isDebugging, canMoveForward } = this.state;
     canMoveForward = isDebugging ? false : true;
     this.setState({
@@ -186,24 +193,6 @@ export class Home extends Component<IProps, IState> {
       ? this.setState({ output: content })
       : this.setState({ input: content });
   };
-
-  componentDidMount() {
-    window.addEventListener("resize", this.resize.bind(this));
-    this.resize();
-  }
-
-  resize() {
-    const { resized } = this.state;
-    if (window.innerWidth <= 760 && !resized) {
-      toast.warning("Ahora en español, no lo haga compa :c");
-      this.setState({ resized: true });
-    } else if (window.innerWidth > 760 && resized) {
-      this.setState({ resized: false });
-    }
-  }
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.resize.bind(this));
-  }
 
   render() {
     let { heap, stack, isDebugging, variables, canMoveForward } = this.state;
@@ -280,6 +269,7 @@ export class Home extends Component<IProps, IState> {
                   mode="typescript"
                   theme="twilight"
                   showPrintMargin={false}
+                  value={this.state.input}
                   onChange={this.handleInput}
                   highlightActiveLine={true}
                   editorProps={{ $blockScrolling: true }}
